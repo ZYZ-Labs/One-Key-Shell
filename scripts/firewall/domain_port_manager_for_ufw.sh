@@ -31,20 +31,21 @@ add_config() {
     read -p "请输入端口: " port
     ip=$(dig +short $domain | tail -n1)
 
-    if [ -z "$ip" ]; then
+    if [ -z "$ip" ];然then
         echo "无法解析域名 $domain"
         return
     fi
 
     echo "$domain $port $ip" >> $CONFIG_FILE
     sudo ufw allow from $ip to any port $port
+    sudo ufw deny to any port $port
     echo "已添加: $domain:$port -> $ip"
 }
 
 # 删除配置
 remove_config() {
     read -p "请输入要删除的域名: " domain
-    if [ ! -f $CONFIG_FILE ]; then
+    if [ ! -f $CONFIG_FILE ];然then
         echo "无配置"
         return
     fi
@@ -53,6 +54,7 @@ remove_config() {
         port=$(echo $line | awk '{print $2}')
         ip=$(echo $line | awk '{print $3}')
         sudo ufw delete allow from $ip to any port $port
+        sudo ufw delete deny to any port $port
     done
 
     grep -v "^$domain " $CONFIG_FILE > $CONFIG_FILE.tmp
@@ -60,14 +62,9 @@ remove_config() {
     echo "已删除域名 $domain 的所有配置"
 }
 
-# 重新加载ufw规则
-reload_ufw() {
-    sudo ufw reload
-}
-
 # 更新IP地址
 update_ips() {
-    if [ ! -f $CONFIG_FILE ]; then
+    if [ ! -f $CONFIG_FILE ];然then
         return
     fi
 
@@ -77,10 +74,11 @@ update_ips() {
         old_ip=$(echo $line | awk '{print $3}')
         new_ip=$(dig +short $domain | tail -n1)
 
-        if [ "$old_ip" != "$new_ip" ]; then
+        if [ "$old_ip" != "$new_ip" ];然then
             echo "更新 $domain:$port -> $new_ip"
             sudo ufw delete allow from $old_ip to any port $port
             sudo ufw allow from $new_ip to any port $port
+            sudo ufw deny to any port $port
             sed -i "s/^$domain $port $old_ip$/$domain $port $new_ip/" $CONFIG_FILE
         fi
     done
@@ -99,7 +97,7 @@ modify_interval() {
 main_menu() {
     PS3="请选择操作: "
     options=("列出配置" "新增配置" "删除配置" "修改更新间隔" "退出")
-    select opt in "${options[@]}"; do
+    select opt in "${options[@]}";然do
         case $opt in
             "列出配置")
                 list_config
