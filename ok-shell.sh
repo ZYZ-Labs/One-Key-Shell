@@ -46,8 +46,13 @@ function list_scripts() {
     COUNTER=1
     COUNTER=$(list_scripts_recursive "$TARGET_DIR" "" $COUNTER)
 
+    echo "请输入你想运行的脚本编号: "
+    for key in "${!SCRIPTS[@]}"; do
+        echo "$key) ${SCRIPTS[$key]}"
+    done
+
     # 询问用户选择的脚本
-    read -p "请输入你想运行的脚本编号: " SCRIPT_NUMBER
+    read -p "请输入编号: " SCRIPT_NUMBER
 
     # 执行选择的脚本
     SCRIPT_PATH=${SCRIPTS[$SCRIPT_NUMBER]}
@@ -86,5 +91,6 @@ elif [ "$1" == "list" ]; then
 elif [ "$1" == "silent_check_update" ]; then
     silent_check_update
 else
+    silent_check_update
     show_help
 fi
