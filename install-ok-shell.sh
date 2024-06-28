@@ -3,6 +3,7 @@
 # 定义变量
 REPO_URL="https://github.com/ZYZ-Labs/One-Key-Shell.git"
 TARGET_DIR="$HOME/.one-key-shell"
+SCRIPT_PATH="$TARGET_DIR/ok-shell.sh"
 
 # 拉取仓库
 if [ -d "$TARGET_DIR" ]; then
@@ -13,10 +14,13 @@ else
     git clone "$REPO_URL" "$TARGET_DIR"
 fi
 
-# 检测 shell 类型并添加 ok-shell 命令到相应的配置文件
-if [ -n "$ZSH_VERSION" ]; then
+# 确保 ok-shell.sh 有执行权限
+chmod +x "$SCRIPT_PATH"
+
+# 检测当前 shell 并添加 ok-shell 命令到相应的配置文件
+if [ -n "$ZSH_VERSION" ] || [ "$(basename "$SHELL")" = "zsh" ]; then
     SHELL_CONFIG="$HOME/.zshrc"
-elif [ -n "$BASH_VERSION" ]; then
+elif [ -n "$BASH_VERSION" ] || [ "$(basename "$SHELL")" = "bash" ]; then
     SHELL_CONFIG="$HOME/.bashrc"
 else
     SHELL_CONFIG="$HOME/.profile"
@@ -24,8 +28,7 @@ fi
 
 if ! grep -q "alias ok-shell=" "$SHELL_CONFIG"; then
     echo "正在添加 ok-shell 命令到 $SHELL_CONFIG..."
-    echo "alias ok-shell='$TARGET_DIR/ok-shell.sh'" >> "$SHELL_CONFIG"
-    source "$SHELL_CONFIG"
+    echo "alias ok-shell='$SCRIPT_PATH'" >> "$SHELL_CONFIG"
 else
     echo "$SHELL_CONFIG 中已经存在 ok-shell 命令"
 fi
