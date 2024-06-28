@@ -7,7 +7,7 @@ detect_firewall() {
     elif command -v firewall-cmd >/dev/null 2>&1; then
         echo "firewalld"
     else
-        echo "未知防火墙"
+        echo "unknown"
     fi
 }
 
@@ -64,7 +64,7 @@ main_menu() {
     local firewall_type=$(detect_firewall)
     echo "检测到的防火墙类型: $firewall_type"
     
-    if [ "$firewall_type" == "未知防火墙" ]; then
+    if [ "$firewall_type" == "unknown" ]; then
         echo "不支持的防火墙类型。"
         exit 1
     fi
@@ -108,6 +108,9 @@ main_menu() {
                 echo "无效选项 $REPLY"
                 ;;
         esac
+        echo
+        echo "操作完成。返回主菜单..."
+        echo
     done
 }
 
