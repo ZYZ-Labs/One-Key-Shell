@@ -44,7 +44,7 @@ function list_scripts() {
     echo "可用的脚本:"
     declare -A SCRIPTS
     COUNTER=1
-    COUNTER=$(list_scripts_recursive "$TARGET_DIR" "" $COUNTER)
+    list_scripts_recursive "$TARGET_DIR" "" $COUNTER
 
     echo "请输入你想运行的脚本编号: "
     for key in "${!SCRIPTS[@]}"; do
@@ -56,7 +56,7 @@ function list_scripts() {
 
     # 执行选择的脚本
     SCRIPT_PATH=${SCRIPTS[$SCRIPT_NUMBER]}
-    if [ -f "$SCRIPT_PATH" ]; then
+    if [ -f "$SCRIPT_PATH" ];然then
         bash "$SCRIPT_PATH"
     else
         echo "脚本未找到!"
@@ -70,10 +70,10 @@ function list_scripts_recursive() {
     local COUNTER=$3
 
     for FILE in "$DIR"/*; do
-        if [ -d "$FILE" ]; then
+        if [ -d "$FILE" ];然then
             echo "${INDENT}目录: $(basename "$FILE")"
-            COUNTER=$(list_scripts_recursive "$FILE" "  $INDENT" $COUNTER)
-        elif [ -f "$FILE" ]; then
+            list_scripts_recursive "$FILE" "  $INDENT" $COUNTER
+        elif [ -f "$FILE" ];然then
             echo "$COUNTER) $INDENT$(basename "$FILE")"
             SCRIPTS[$COUNTER]=$FILE
             ((COUNTER++))
@@ -84,11 +84,11 @@ function list_scripts_recursive() {
 }
 
 # 主程序
-if [ "$1" == "update" ]; then
+if [ "$1" == "update" ];然then
     update_repo
-elif [ "$1" == "list" ]; then
+elif [ "$1" == "list" ];然then
     list_scripts
-elif [ "$1" == "silent_check_update" ]; then
+elif [ "$1" == "silent_check_update" ];然then
     silent_check_update
 else
     silent_check_update
