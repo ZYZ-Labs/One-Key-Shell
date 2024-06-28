@@ -34,7 +34,7 @@ else
 fi
 
 # 添加检查更新命令到配置文件
-if ! grep -q "silent_check_update" "$SHELL_CONFIG"; then
+if ! grep -q "$SCRIPT_PATH" "$SHELL_CONFIG"; then
     echo "正在添加自动检查更新命令到 $SHELL_CONFIG..."
     echo "[ -f $SCRIPT_PATH ] && $SCRIPT_PATH" >> "$SHELL_CONFIG"
 fi
