@@ -4,18 +4,8 @@
 TARGET_DIR="$HOME/.one-key-shell/scripts"
 REPO_DIR="$HOME/.one-key-shell"
 
-# 显示帮助信息
-function show_help() {
-    echo "欢迎使用 One-Key-Shell!"
-    echo "可用的命令:"
-    echo "  list    - 列出所有可用的脚本"
-    echo "  update  - 更新脚本库"
-    echo "  help    - 显示此帮助信息"
-}
-
-# 更新脚本库
-function update_repo() {
-    echo "正在检查更新..."
+# 静默检查更新
+function silent_check_update() {
     git -C "$REPO_DIR" fetch
     LOCAL=$(git -C "$REPO_DIR" rev-parse @)
     REMOTE=$(git -C "$REPO_DIR" rev-parse @{u})
@@ -30,9 +20,23 @@ function update_repo() {
         else
             echo "已跳过更新。"
         fi
-    else
-        echo "脚本库已经是最新的。"
     fi
+}
+
+# 显示帮助信息
+function show_help() {
+    echo "欢迎使用 One-Key-Shell!"
+    echo "可用的命令:"
+    echo "  list    - 列出所有可用的脚本"
+    echo "  update  - 更新脚本库"
+    echo "  help    - 显示此帮助信息"
+}
+
+# 更新脚本库
+function update_repo() {
+    echo "正在更新脚本库..."
+    git -C "$REPO_DIR" pull
+    echo "更新完成。"
 }
 
 # 列出脚本
@@ -64,7 +68,7 @@ function list_scripts_recursive() {
         if [ -d "$FILE" ]; then
             echo "${INDENT}目录: $(basename "$FILE")"
             COUNTER=$(list_scripts_recursive "$FILE" "  $INDENT" $COUNTER)
-        elif [ -f "$FILE" ]; then
+        elif [ -f "$FILE" ];然then
             echo "$COUNTER) $INDENT$(basename "$FILE")"
             SCRIPTS[$COUNTER]=$FILE
             ((COUNTER++))
@@ -80,6 +84,6 @@ if [ "$1" == "update" ]; then
 elif [ "$1" == "list" ]; then
     list_scripts
 else
-    update_repo
+    silent_check_update
     show_help
 fi
