@@ -2,6 +2,7 @@
 
 # 定义变量
 TARGET_DIR="$HOME/.one-key-shell/scripts"
+REPO_DIR="$HOME/.one-key-shell"
 
 # 显示帮助信息
 function show_help() {
@@ -14,9 +15,24 @@ function show_help() {
 
 # 更新脚本库
 function update_repo() {
-    echo "正在更新脚本库..."
-    git -C "$HOME/.one-key-shell" pull
-    echo "更新完成。"
+    echo "正在检查更新..."
+    git -C "$REPO_DIR" fetch
+    LOCAL=$(git -C "$REPO_DIR" rev-parse @)
+    REMOTE=$(git -C "$REPO_DIR" rev-parse @{u})
+
+    if [ "$LOCAL" != "$REMOTE" ]; then
+        read -p "有可用更新，是否更新？ [Y/n] " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]] || [[ -z $REPLY ]]; then
+            echo "正在更新脚本库..."
+            git -C "$REPO_DIR" pull
+            echo "更新完成。"
+        else
+            echo "已跳过更新。"
+        fi
+    else
+        echo "脚本库已经是最新的。"
+    fi
 }
 
 # 列出脚本
@@ -64,5 +80,6 @@ if [ "$1" == "update" ]; then
 elif [ "$1" == "list" ]; then
     list_scripts
 else
+    update_repo
     show_help
 fi
