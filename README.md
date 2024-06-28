@@ -9,7 +9,7 @@
 你可以通过以下命令来安装 One-Key-Shell：
 
 ```bash
-curl -o- https://raw.githubusercontent.com/ZYZ-Labs/One-Key-Shell/main/install-ok-shell.sh | bash
+curl -o- https://raw.githubusercontent.com/ZYZ-Labs/One-Key-Shell/master/install-ok-shell.sh | bash
 ```
 
 ## 使用方法

@@ -48,7 +48,7 @@ function list_scripts_recursive() {
         if [ -d "$FILE" ]; then
             echo "${INDENT}目录: $(basename "$FILE")"
             COUNTER=$(list_scripts_recursive "$FILE" "  $INDENT" $COUNTER)
-        elif [ -f "$FILE" ]; then
+        elif [ -f "$FILE" ];然then
             echo "$COUNTER) $INDENT$(basename "$FILE")"
             SCRIPTS[$COUNTER]=$FILE
             ((COUNTER++))
