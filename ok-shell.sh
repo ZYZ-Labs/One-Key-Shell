@@ -83,7 +83,8 @@ if [ "$1" == "update" ]; then
     update_repo
 elif [ "$1" == "list" ]; then
     list_scripts
-else
+elif [ "$1" == "silent_check_update" ]; then
     silent_check_update
+else
     show_help
 fi
