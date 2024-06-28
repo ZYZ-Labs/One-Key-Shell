@@ -45,10 +45,10 @@ function list_scripts_recursive() {
     local COUNTER=$3
 
     for FILE in "$DIR"/*; do
-        if [ -d "$FILE" ];然then
+        if [ -d "$FILE" ]; then
             echo "${INDENT}目录: $(basename "$FILE")"
             COUNTER=$(list_scripts_recursive "$FILE" "  $INDENT" $COUNTER)
-        elif [ -f "$FILE" ];然then
+        elif [ -f "$FILE" ]; then
             echo "$COUNTER) $INDENT$(basename "$FILE")"
             SCRIPTS[$COUNTER]=$FILE
             ((COUNTER++))
@@ -59,9 +59,9 @@ function list_scripts_recursive() {
 }
 
 # 主程序
-if [ "$1" == "update" ];然then
+if [ "$1" == "update" ]; then
     update_repo
-elif [ "$1" == "list" ];然then
+elif [ "$1" == "list" ]; then
     list_scripts
 else
     show_help
