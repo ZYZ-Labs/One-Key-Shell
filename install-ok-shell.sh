@@ -3,7 +3,7 @@
 # 定义变量
 REPO_URL="https://github.com/ZYZ-Labs/One-Key-Shell.git"
 TARGET_DIR="$HOME/.one-key-shell"
-SCRIPT_PATH="$TARGET_DIR/ok-shell.sh"
+SCRIPT_PATH="$TARGET_DIR/ok-shell.c"
 INSTALL_PATH="$HOME/.local/bin/ok-shell"
 
 # 拉取仓库
@@ -18,9 +18,13 @@ fi
 # 确保 .local/bin 目录存在
 mkdir -p "$HOME/.local/bin"
 
-# 将 ok-shell.sh 复制到新的位置
-cp "$SCRIPT_PATH" "$INSTALL_PATH"
-chmod +x "$INSTALL_PATH"
+# 编译 C 程序
+gcc -o "$INSTALL_PATH" "$SCRIPT_PATH"
+
+# 确保 .local/bin 在 PATH 中
+if ! grep -q "$HOME/.local/bin" <<< "$PATH"; then
+    echo "export PATH=\$PATH:\$HOME/.local/bin" >> "$SHELL_CONFIG"
+fi
 
 # 检测当前 shell 并添加 ok-shell 命令到相应的配置文件
 if [ -n "$ZSH_VERSION" ] || [ "$(basename "$SHELL")" = "zsh" ]; then
@@ -36,11 +40,6 @@ if ! grep -q "alias ok-shell=" "$SHELL_CONFIG"; then
     echo "alias ok-shell='$INSTALL_PATH'" >> "$SHELL_CONFIG"
 else
     echo "$SHELL_CONFIG 中已经存在 ok-shell 命令"
-fi
-
-# 确保 .local/bin 在 PATH 中
-if ! grep -q "$HOME/.local/bin" <<< "$PATH"; then
-    echo "export PATH=\$PATH:\$HOME/.local/bin" >> "$SHELL_CONFIG"
 fi
 
 # 添加检查更新命令到配置文件
