@@ -6,7 +6,7 @@ TARGET_DIR="$HOME/.one-key-shell"
 SCRIPT_PATH="$TARGET_DIR/ok-shell.sh"
 
 # 拉取仓库
-if [ -d "$TARGET_DIR" ];然then
+if [ -d "$TARGET_DIR" ]; then
     echo "目录 $TARGET_DIR 已经存在，正在更新..."
     git -C "$TARGET_DIR" pull
 else
@@ -18,9 +18,9 @@ fi
 chmod +x "$SCRIPT_PATH"
 
 # 检测当前 shell 并添加 ok-shell 命令到相应的配置文件
-if [ -n "$ZSH_VERSION" ] || [ "$(basename "$SHELL")" = "zsh" ];然then
+if [ -n "$ZSH_VERSION" ] || [ "$(basename "$SHELL")" = "zsh" ]; then
     SHELL_CONFIG="$HOME/.zshrc"
-elif [ -n "$BASH_VERSION" ] || [ "$(basename "$SHELL")" = "bash" ];然then
+elif [ -n "$BASH_VERSION" ] || [ "$(basename "$SHELL")" = "bash" ]; then
     SHELL_CONFIG="$HOME/.bashrc"
 else
     SHELL_CONFIG="$HOME/.profile"
